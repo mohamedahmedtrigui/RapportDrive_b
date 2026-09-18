@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -11,13 +12,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'section',
     'course_id',
     'driver_id',
+    'client_nom',
+    'zone_id',
     'description',
-    'remarque',
     'categorie',
     'severite',
 ])]
 class ReportEntry extends Model
 {
+    use HasFactory;
+
     /**
      * @return BelongsTo<Report, $this>
      */
@@ -32,5 +36,13 @@ class ReportEntry extends Model
     public function driver(): BelongsTo
     {
         return $this->belongsTo(Driver::class);
+    }
+
+    /**
+     * @return BelongsTo<Zone, $this>
+     */
+    public function zone(): BelongsTo
+    {
+        return $this->belongsTo(Zone::class);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Dispatcher;
 use App\Models\User;
 
 return [
@@ -42,6 +43,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Required for `auth:sanctum` to resolve at all. The provider is
+        // intentionally null: Sanctum resolves the authenticated model
+        // polymorphically from the token's tokenable_type/tokenable_id
+        // columns, not from this config.
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => null,
+        ],
     ],
 
     /*
@@ -65,6 +75,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'dispatchers' => [
+            'driver' => 'eloquent',
+            'model' => Dispatcher::class,
         ],
 
         // 'users' => [

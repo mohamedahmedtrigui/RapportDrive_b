@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('report_entries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('report_id')->constrained('reports')->onDelete('cascade');
-            $table->enum('section', ['client', 'chauffeur', 'service']);
+            $table->enum('section', ['client', 'chauffeur', 'service'])->nullable();
             $table->string('course_id');
             $table->foreignId('driver_id')->nullable()->constrained('drivers')->onDelete('set null');
             $table->text('description');

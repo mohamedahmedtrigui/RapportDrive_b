@@ -3,13 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['dispatcher_id', 'ville', 'date_rapport', 'fichier_original_path', 'statut'])]
+#[Fillable([
+    'dispatcher_id',
+    'titre',
+    'date_rapport',
+    'fichier_original_path',
+    'statut',
+    'ai_summary',
+    'ai_summary_read_at',
+    'submitted_at',
+])]
 class Report extends Model
 {
+    use HasFactory;
+
     /**
      * Get the attributes that should be cast.
      *
@@ -19,6 +31,8 @@ class Report extends Model
     {
         return [
             'date_rapport' => 'date',
+            'ai_summary_read_at' => 'datetime',
+            'submitted_at' => 'datetime',
         ];
     }
 
