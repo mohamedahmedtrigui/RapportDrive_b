@@ -32,7 +32,7 @@ class AiController extends Controller
         // admin, and must not sit waiting on the (slow) AI call for that.
         // The analysis itself runs afterwards on the queue.
         if ($request->user() instanceof Dispatcher) {
-            $report->update(['submitted_at' => now()]);
+            $report->update(['submitted_at' => now(), 'ia_status' => 'en_cours']);
             Notification::send(User::all(), new ReportSubmitted($report));
             AnalyzeReportJob::dispatch($report);
 

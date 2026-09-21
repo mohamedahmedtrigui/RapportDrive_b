@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'fichier_original_path',
     'statut',
     'ai_summary',
+    'ia_status',
     'ai_summary_read_at',
     'submitted_at',
 ])]

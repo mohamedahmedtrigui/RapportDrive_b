@@ -24,4 +24,12 @@ class AnalyzeReportJob implements ShouldQueue
     {
         $analyzer->analyze($this->report);
     }
+
+    public function failed(\Throwable $e): void
+    {
+        // Belt and braces: analyze() already flips this to 'erreur' on each
+        // failed attempt, but this covers a failure outside analyze() itself
+        // (e.g. the report row vanishing between attempts).
+        $this->report->update(['ia_status' => 'erreur']);
+    }
 }
