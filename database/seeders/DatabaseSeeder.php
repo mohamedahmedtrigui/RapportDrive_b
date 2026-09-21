@@ -17,26 +17,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@rapportdrive.test',
-            'password' => 'password',
-            'role' => 'admin',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@rapportdrive.test'],
+            User::factory()->raw([
+                'name' => 'Admin',
+                'email' => 'admin@rapportdrive.test',
+                'password' => 'password',
+                'role' => 'admin',
+            ]),
+        );
 
-        User::factory()->create([
-            'name' => 'Manager',
-            'email' => 'manager@rapportdrive.test',
-            'password' => 'password',
-            'role' => 'manager',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'manager@rapportdrive.test'],
+            User::factory()->raw([
+                'name' => 'Manager',
+                'email' => 'manager@rapportdrive.test',
+                'password' => 'password',
+                'role' => 'manager',
+            ]),
+        );
 
-        Dispatcher::factory()->create([
-            'nom' => 'Dispatcher',
-            'email' => 'dispatcher@rapportdrive.test',
-            'ville_affectee' => 'Tunis',
-            'password' => 'password',
-        ]);
+        Dispatcher::firstOrCreate(
+            ['email' => 'dispatcher@rapportdrive.test'],
+            Dispatcher::factory()->raw([
+                'nom' => 'Dispatcher',
+                'email' => 'dispatcher@rapportdrive.test',
+                'ville_affectee' => 'Tunis',
+                'password' => 'password',
+            ]),
+        );
 
         $zones = [
             'Ariana',
@@ -54,7 +63,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($zones as $nom) {
-            Zone::factory()->create(['nom' => $nom]);
+            Zone::firstOrCreate(['nom' => $nom], Zone::factory()->raw(['nom' => $nom]));
         }
     }
 }
