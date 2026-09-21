@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\AnalyzeReportJob;
 use App\Models\Dispatcher;
 use App\Models\Report;
 use App\Models\User;
@@ -26,15 +27,21 @@ class AiController extends Controller
             abort(422, 'Ce rapport a déjà été soumis et ne peut plus être soumis à nouveau.');
         }
 
-        $result = $analyzer->analyze($report);
-
-        // Only when the dispatcher themselves submits — not when a manager
-        // manually re-triggers analysis — do we mark the report as
-        // "terminé" (drives the État column) and notify managers/admins.
+        // Submitting a report and analyzing it are separate responsibilities:
+        // the dispatcher only needs confirmation that the report reached the
+        // admin, and must not sit waiting on the (slow) AI call for that.
+        // The analysis itself runs afterwards on the queue.
         if ($request->user() instanceof Dispatcher) {
-            $result->update(['submitted_at' => now()]);
+            $report->update(['submitted_at' => now()]);
             Notification::send(User::all(), new ReportSubmitted($report));
+            AnalyzeReportJob::dispatch($report);
+
+            return response()->json($report->fresh(['dispatcher', 'reportEntries.driver', 'reportEntries.zone']));
         }
+
+        // A manager/admin explicitly clicking "Analyser avec l'IA" wants the
+        // result right away.
+        $result = $analyzer->analyze($report);
 
         return response()->json($result);
     }
