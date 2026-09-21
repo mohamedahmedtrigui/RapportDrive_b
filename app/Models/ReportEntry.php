@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'section',
     'course_id',
     'driver_id',
+    'driver_nom',
     'client_nom',
     'zone_id',
     'description',
